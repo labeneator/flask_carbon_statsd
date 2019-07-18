@@ -10,11 +10,11 @@ setup(
     author_email='l.mwangi@gmail.com',
     description='Flask metrics in Carbon Statsd format.',
     long_description=__doc__,
-    py_modules=['flask_carbon_statsd'],
+    packages=['flask_carbon_statsd'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',
-    install_requires=[
+    iqnstall_requires=[
         'Flask',
         'statsd',
     ],

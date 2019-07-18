@@ -6,6 +6,10 @@ Generate and send Flask metrics in [Graphite Carbon Format](https://github.com/i
 # Install
 ```bash
 pip install flask-carbon-statsd
+
+# Latest Code
+
+pip install git+https://github.com/labeneator/flask_carbon_statsd.git
 ```
 
 
