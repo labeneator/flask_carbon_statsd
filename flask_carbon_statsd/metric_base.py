@@ -23,4 +23,4 @@ class MetricBase(object):
         return '.'.join(hostname_domain_components)
 
     def mk_metric(self, metric, *tags):
-        return '.'.join([metric] + map(str, tags))
+        return '.'.join([metric] + map(str, list(tags)))
