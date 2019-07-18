@@ -17,10 +17,17 @@ pip install git+https://github.com/labeneator/flask_carbon_statsd.git
 ```python
 # myapp.py
 from flask import Flask, Blueprint
-from flask_carbon_statsd import FlaskCarbonStatsd
+from flask_carbon_statsd import FlaskCarbonStatsdTimerCounter
+
+flask_statsd = FlaskCarbonStatsdTimerCounter(host='localhost', port=8125)
+
 
 app = Flask(__name__)
-FlaskCarbonStatsd(app=app, host='localhost', port=8125)
+flask_statsd.init_app(app)
+
+# or
+flask_statsd = FlaskCarbonStatsd(app=app, host='localhost', port=8125)
+
 
 @app.route('/app/download')
 def app_download():

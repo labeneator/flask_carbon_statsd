@@ -5,7 +5,7 @@ from statsd import StatsClient
 
 class MetricBase(object):
     def __init__(self, host='localhost', port=8125, environment="dev"):
-        self.hostname = platform.node() or socket.gethostname()
+        self.hostname = self.get_reversed_hostname()
         self.statsd_host = host
         self.statsd_port = port
         self.measurement = None
@@ -15,6 +15,12 @@ class MetricBase(object):
         return StatsClient(host=self.statsd_host,
                            port=self.statsd_port)
 
-    def mk_metric(self, metric, **tags):
-        return '.'.join([metric] + ['{}'.format(v) for k, v in tags.items()])
 
+    def get_reversed_hostname(self):
+        hostname = platform.node() or socket.gethostname()
+        hostname_domain_components = hostname.split('.')
+        hostname_domain_components.reverse()
+        return '.'.join(hostname_domain_components)
+
+    def mk_metric(self, metric, *tags):
+        return '.'.join([metric] + map(str, tags))

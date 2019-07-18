@@ -1,10 +1,11 @@
+import time
 from flask import request, _app_ctx_stack as stack
 from .metric_base import MetricBase
 
 class FlaskCarbonStatsdBase(MetricBase):
 
     def __init__(self, app=None, host='localhost', port=8125, environment="dev"):
-        super(FlaskCarbonStatsd, self).__init__(host, port, environment)
+        super(FlaskCarbonStatsdBase, self).__init__(host, port, environment)
         if app is not None:
             self.init_app(app)
 
@@ -40,15 +41,15 @@ class FlaskCarbonStatsdBase(MetricBase):
 
 
 class FlaskCarbonStatsdTimer(FlaskCarbonStatsdBase):
-    def send_flask_metrics(measurement, elapsed, hostname, endpoint, status_code):
+    def send_flask_metrics(self, measurement, elapsed, hostname, endpoint, status_code):
         with self.connection.pipeline() as pipe:
-            metric = self.mk_metric(measurement, elapsed, hostname, endpoint, status_code)
+            metric = self.mk_metric(measurement, hostname, endpoint, status_code)
             pipe.timing(metric, elapsed)
 
 
 class FlaskCarbonStatsdTimerCounter(FlaskCarbonStatsdBase):
-    def send_flask_metrics(measurement, elapsed, hostname, endpoint, status_code):
+    def send_flask_metrics(self, measurement, elapsed, hostname, endpoint, status_code):
         with self.connection.pipeline() as pipe:
-            metric = self.mk_metric(measurement, elapsed, hostname, endpoint, status_code)
+            metric = self.mk_metric(measurement, hostname, endpoint, status_code)
             pipe.timing(metric, elapsed)
             pipe.incr(metric, 1)

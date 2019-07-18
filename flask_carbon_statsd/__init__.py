@@ -1,1 +1,1 @@
-from flask_carbon_statsd import FlaskCarbonStatsdTimer, FlaskCarbonStatsdTimerCounter
+from .flask_carbon_statsd import FlaskCarbonStatsdTimer, FlaskCarbonStatsdTimerCounter
