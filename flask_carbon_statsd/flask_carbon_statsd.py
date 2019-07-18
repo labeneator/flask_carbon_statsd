@@ -41,6 +41,11 @@ class FlaskCarbonStatsdBase(MetricBase):
 
 
 class FlaskCarbonStatsdTimer(FlaskCarbonStatsdBase):
+    """
+    Times each flask method served.
+    Example from tcpdump:
+        flask.carbon.statsd.dev.flask_template.app.local.LocalHost-3.dashboard.index.200:3.650904|ms
+    """
     def send_flask_metrics(self, measurement, elapsed, hostname, endpoint, status_code):
         with self.connection.pipeline() as pipe:
             metric = self.mk_metric(measurement, hostname, endpoint, status_code)
@@ -48,6 +53,13 @@ class FlaskCarbonStatsdTimer(FlaskCarbonStatsdBase):
 
 
 class FlaskCarbonStatsdTimerCounter(FlaskCarbonStatsdBase):
+    """
+    Times each flask method served.
+    Increments a counter for each method called.
+    Example from tcpdump:
+        flask.carbon.statsd.dev.flask_template.app.local.LocalHost-3.dashboard.index.200:3.650904|ms
+        flask.carbon.statsd.dev.flask_template.app.local.LocalHost-3.dashboard.index.200:1|c
+    """
     def send_flask_metrics(self, measurement, elapsed, hostname, endpoint, status_code):
         with self.connection.pipeline() as pipe:
             metric = self.mk_metric(measurement, hostname, endpoint, status_code)
