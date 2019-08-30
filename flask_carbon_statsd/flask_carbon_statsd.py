@@ -29,13 +29,16 @@ class FlaskCarbonStatsdBase(MetricBase):
 
     def after_request(self, resp):
         ctx = stack.top
-        elapsed = (time.time() - ctx._flask_statsd_request_begin_at) * 1000
 
-        status_code = resp.status_code
-        endpoint = request.endpoint
+        if hasattr(ctx, '_flask_statsd_request_begin_at'):
 
-        self.send_flask_metrics(
-            self.measurement, elapsed, self.hostname, endpoint, status_code)
+            elapsed = (time.time() - ctx._flask_statsd_request_begin_at) * 1000
+
+            status_code = resp.status_code
+            endpoint = request.endpoint
+
+            self.send_flask_metrics(
+                self.measurement, elapsed, self.hostname, endpoint, status_code)
 
         return resp
 
